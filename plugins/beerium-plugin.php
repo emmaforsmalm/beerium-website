@@ -1,11 +1,10 @@
+<?php
 /*
 * Plugin Name: Beerium-plugin
 * Description: Custom REST API endpoints
 * Version: 1.0.0
 * Author: Emma Forsmalm
 */
-
-<?php
 
 # Förhindrar att någon når plugin:et direkt
 if (!defined ('ABSPATH')) {
@@ -59,5 +58,5 @@ function beerium_register_product_post_type() {
         'supports' => array('title', 'editor', 'author', 'thumbnail', 'excerpt'),
     );
 
-    register_post_type('event', $product_args);
+    register_post_type('product', $product_args);
 }
