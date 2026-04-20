@@ -33,6 +33,8 @@ function beerium_register_event_post_type() {
         'has_archive' => true,
         'show_in_rest' => true,
         'supports' => array('title', 'editor', 'author', 'thumbnail', 'excerpt'),
+        'menu_icon' => 'dashicons-calendar-alt',
+
     );
 
     register_post_type('event', $event_args);
@@ -56,6 +58,7 @@ function beerium_register_product_post_type() {
         'has_archive' => true,
         'show_in_rest' => true,
         'supports' => array('title', 'editor', 'author', 'thumbnail', 'excerpt'),
+        'menu_icon' => 'dashicons-beer',
     );
 
     register_post_type('product', $product_args);
