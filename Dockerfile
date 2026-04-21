@@ -1,3 +1,3 @@
-FROM wordpress:php8.2-fpm-alpine
+FROM bitnami/wordpress:latest
 
 COPY . /var/www/html/wp-content
