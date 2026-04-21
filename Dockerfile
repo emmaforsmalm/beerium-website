@@ -1,3 +1,3 @@
 FROM bitnami/wordpress:latest
 
-COPY . /var/www/html/wp-content
+COPY plugins/ /bitnami/wordpress/wp-content/plugins/
