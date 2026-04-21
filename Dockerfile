@@ -1,7 +1,6 @@
 FROM wordpress:latest
 
-RUN apt-get update && apt-get install -y apache 2 && \
-a2dismod mpm_event mpm_worker || true && \
-a2enmod mpm_prefork
+RUN a2dismod php8.* || true && \
+a2enmod php8.2 || true
 
 COPY . /var/www/html/wp-content
