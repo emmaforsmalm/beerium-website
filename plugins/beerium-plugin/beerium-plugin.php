@@ -14,6 +14,8 @@ if (!defined ('ABSPATH')) {
 # Funktioner för att lägga till olika typer av poster
 add_action('init', 'beerium_register_event_post_type');
 add_action('init', 'beerium_register_product_post_type');
+add_action('init', 'register_member_post_type');
+add_action('manage_member_posts_custom_column', 'fill_member_columns', 10,2)
 
 # Funktion för att registrera event-post
 function beerium_register_event_post_type() {
@@ -62,4 +64,60 @@ function beerium_register_product_post_type() {
     );
 
     register_post_type('product', $product_args);
+}
+
+#Funktion för att hantera väntande betalningar
+function register_member_post_type() {
+    $member_args = array(
+        'public' => false,
+        'show_ui' => true,
+        'label' => 'Medlemmar',
+        'supports' => ['title'],
+        'menu_icon' => 'groups'
+    );
+
+    register_post_type('member', $member_args);
+}
+
+#Lägg till kolumner för medlemmar
+function add_member_columns($columns) {
+    $columns['member_name'] = 'Namn';
+    $columns['member_email'] = 'E-postadress';
+    $columns['member_reference'] = 'Referensnummer';
+    $columns['member_payStatus'] = 'Betalning';
+    $columns['member_welcome_email'] = 'Välkomstmejl';
+    $columns['member_merch'] = 'Merch';
+    return $columns;
+}
+
+add_filter('manage_member_posts_columns', 'add_member_columns');
+
+#Fyll kolumnerna med data
+function fill_member_columns($column, $post_id) {
+    switch ($column) {
+        case 'member_name':
+            echo get_field('member_name', $post_id);
+            break;
+        case 'member_email':
+            echo get_field('member_email', $post_id);
+            break;
+        case 'member_reference':
+            echo get_field('member_reference', $post_id);
+            break;
+        case 'member_payStatus':
+            $status = get_field('member_payStatus', $post_id);
+            $color = $status === 'betald' ? 'green' : 'red';
+            echo '<span style="color:' . $color . '">' . $status . '</span>';
+            break;
+        case 'member_welcome_email':
+            $email = get_field('member_welcome_email', $post_id);
+            $color = $email === 'skickat' ? 'green' : 'red';
+            echo '<span style="color:' . $color . '">' . $email . '</span>';
+            break;
+        case 'member_merch':
+            $merch = get_field('member_merch', $post_id);
+            $color = $merch === 'skickat' ? 'green' : 'red';
+            echo '<span style="color:' . $color . '">' . $merch . '</span>';
+            break;
+    }
 }
