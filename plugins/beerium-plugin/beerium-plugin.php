@@ -2,7 +2,7 @@
 /*
 * Plugin Name: Beerium-plugin
 * Description: Custom REST API endpoints
-* Version: 1.0.0
+* Version: 1.0.1
 * Author: Emma Forsmalm
 */
 
@@ -15,7 +15,7 @@ if (!defined ('ABSPATH')) {
 add_action('init', 'beerium_register_event_post_type');
 add_action('init', 'beerium_register_product_post_type');
 add_action('init', 'register_member_post_type');
-add_action('manage_member_posts_custom_column', 'fill_member_columns', 10,2)
+add_action('manage_member_posts_custom_column', 'fill_member_columns', 10,2);
 
 # Funktion för att registrera event-post
 function beerium_register_event_post_type() {
@@ -71,9 +71,10 @@ function register_member_post_type() {
     $member_args = array(
         'public' => false,
         'show_ui' => true,
+        'show_in_rest' => true,
         'label' => 'Medlemmar',
         'supports' => ['title'],
-        'menu_icon' => 'groups'
+        'menu_icon' => 'dashicons-groups',
     );
 
     register_post_type('member', $member_args);
@@ -84,7 +85,7 @@ function add_member_columns($columns) {
     $columns['member_name'] = 'Namn';
     $columns['member_email'] = 'E-postadress';
     $columns['member_reference'] = 'Referensnummer';
-    $columns['member_payStatus'] = 'Betalning';
+    $columns['member_payment'] = 'Betalning';
     $columns['member_welcome_email'] = 'Välkomstmejl';
     $columns['member_merch'] = 'Merch';
     return $columns;
@@ -104,8 +105,8 @@ function fill_member_columns($column, $post_id) {
         case 'member_reference':
             echo get_field('member_reference', $post_id);
             break;
-        case 'member_payStatus':
-            $status = get_field('member_payStatus', $post_id);
+        case 'member_payment':
+            $status = get_field('member_payment', $post_id);
             $color = $status === 'betald' ? 'green' : 'red';
             echo '<span style="color:' . $color . '">' . $status . '</span>';
             break;
