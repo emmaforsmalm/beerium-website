@@ -122,3 +122,32 @@ function fill_member_columns($column, $post_id) {
             break;
     }
 }
+
+# Skydda users och members
+add_filter('rest_authentication_errors', 'beerium_restrict_rest_reads');
+
+function beerium_restrict_rest_reads($result){
+if (!empty ($result)) {
+    return $result;
+}
+
+$request_uri = $_SERVER['REQUEST_URI'];
+$method = $_SERVER['REQUEST_METHOD'];
+
+$protected_routes = array(
+    '/wp-json/wp/v2/users',
+    '/wp-json/wp/v2/member',
+);
+
+foreach ($protected_routes as $route) {
+    if (strpos($request_uri, $route) !== false && $method === 'GET' && ! is_user_logged_in()) {
+        return new WP_Error(
+            'rest_forbidden',
+            'Publik läsning av denna endpoint är inte tillåten.',
+            array('status' => 401)
+        );
+    }
+}
+
+return $result;
+}
