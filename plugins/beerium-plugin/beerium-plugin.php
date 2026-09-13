@@ -165,7 +165,7 @@ function beerium_skicka_mejl_ny_medlem($post, $request, $creating) {
     $member_email = get_field('member_email', $post->ID);
     $reference = get_field('member_reference', $post->ID);
 
-    $to = 'emma.forsmalm@hotmail.com';
+    $to = 'kontakt@beerium.se';
     $subject = 'Ny medlem skapad: ' . $member_name;
     $message = "En ny medlem har registrerats: \n\n"
                 . "Namn: $member_name\n"
