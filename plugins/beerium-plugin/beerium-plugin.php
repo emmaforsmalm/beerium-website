@@ -154,7 +154,7 @@ return $result;
 
 #Funktion för att skicka mejl när en ny medlem skapas
 
-add_action('rest_insert_member', 'beerium_skicka_mejl_ny_medlem', 10, 3);
+add_action('rest_after_insert_member', 'beerium_skicka_mejl_ny_medlem', 10, 3);
 
 function beerium_skicka_mejl_ny_medlem($post, $request, $creating) {
     if(!$creating) {
