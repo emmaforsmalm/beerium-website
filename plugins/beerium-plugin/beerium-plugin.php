@@ -151,3 +151,28 @@ foreach ($protected_routes as $route) {
 
 return $result;
 }
+
+#Funktion för att skicka mejl när en ny medlem skapas
+
+add_action('rest_insert_member', 'beerium_skicka_mejl_ny_medlem', 10, 3);
+
+function beerium_skicka_mejl_ny_medlem($post, $request, $creating) {
+    if(!$creating) {
+        return;
+    }
+
+    $member_name = get_field('member_name', $post->ID);
+    $member_email = get_field('member_email', $post->ID);
+    $reference = get_field('member_reference', $post->ID);
+
+    $to = 'emma.forsmalm@hotmail.com';
+    $subject = 'Ny medlem skapad: ' . $member_name;
+    $message = "En ny medlem har registrerats: \n\n"
+                . "Namn: $member_name\n"
+                . "E-post: $member_email\n"
+                . "Referens: $reference";
+
+    $headers = array('Content-Type: text/plain; charset=UTF-8');
+
+    wp_mail($to, $subject, $message, $headers);
+}
