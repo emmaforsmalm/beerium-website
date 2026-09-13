@@ -1,5 +1,5 @@
 FROM bitnami/wordpress:latest
 
-COPY plugins/ /opt/bitnami/wordpress/wp-content/plugins/
+COPY --chown=1001:1001 plugins/ /opt/bitnami/wordpress/wp-content/plugins/
 
 
